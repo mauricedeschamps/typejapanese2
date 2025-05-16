@@ -295,6 +295,7 @@
                 <button class="kana-btn" data-base="や">や</button>
                 <button class="kana-btn" data-base="ら">ら</button>
                 <button class="kana-btn" data-base="わ">わ</button>
+                <button class="kana-btn" data-base="ー">ー</button>
             </div>
         </div>
 
@@ -389,7 +390,8 @@
                 'ま': { romaji: 'ma', variants: ['ま', 'み', 'む', 'め', 'も', 'みゃ', 'みゅ', 'みょ'] },
                 'や': { romaji: 'ya', variants: ['や', 'ゆ', 'よ', 'ゃ', 'ゅ', 'ょ'] },
                 'ら': { romaji: 'ra', variants: ['ら', 'り', 'る', 'れ', 'ろ', 'りゃ', 'りゅ', 'りょ'] },
-                'わ': { romaji: 'wa', variants: ['わ', 'を', 'ん'] }
+                'わ': { romaji: 'wa', variants: ['わ', 'を', 'ん'] },
+                'ー': { romaji: '-', variants: ['ー'] } // 伸ばす記号を追加
             };
 
             // カタカナマップ
@@ -422,7 +424,8 @@
                 'ぎゃ': 'ギャ', 'ぎゅ': 'ギュ', 'ぎょ': 'ギョ',
                 'じゃ': 'ジャ', 'じゅ': 'ジュ', 'じょ': 'ジョ',
                 'びゃ': 'ビャ', 'びゅ': 'ビュ', 'びょ': 'ビョ',
-                'ぴゃ': 'ピャ', 'ぴゅ': 'ピュ', 'ぴょ': 'ピョ'
+                'ぴゃ': 'ピャ', 'ぴゅ': 'ピュ', 'ぴょ': 'ピョ',
+                'ー': 'ー' // カタカナの伸ばす記号
             };
 
             // ローマ字マップ
@@ -455,7 +458,8 @@
                 'ぎゃ': 'gya', 'ぎゅ': 'gyu', 'ぎょ': 'gyo',
                 'じゃ': 'ja', 'じゅ': 'ju', 'じょ': 'jo',
                 'びゃ': 'bya', 'びゅ': 'byu', 'びょ': 'byo',
-                'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo'
+                'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo',
+                'ー': '-' // ローマ字の伸ばす記号
             };
 
             // DOM要素
@@ -633,6 +637,9 @@
                     // 「は」を「Ha」と発音するように強制
                     if (char === 'は' || char === 'ハ') {
                         utterance.text = 'ha';
+                    } else if (char === 'ー' || char === '-') {
+                        // 伸ばす記号は無音
+                        return;
                     } else {
                         utterance.text = char;
                     }
@@ -711,6 +718,9 @@
                     if (currentScript === 'hiragana' || currentScript === 'katakana') {
                         textToSpeak = textToSpeak.replace(/は/g, 'ha').replace(/ハ/g, 'ha');
                     }
+                    
+                    // 伸ばす記号は無音
+                    textToSpeak = textToSpeak.replace(/ー/g, '').replace(/-/g, '');
                     
                     utterance.text = textToSpeak;
                     utterance.lang = 'ja-JP';
