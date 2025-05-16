@@ -391,7 +391,7 @@
                 'や': { romaji: 'ya', variants: ['や', 'ゆ', 'よ', 'ゃ', 'ゅ', 'ょ'] },
                 'ら': { romaji: 'ra', variants: ['ら', 'り', 'る', 'れ', 'ろ', 'りゃ', 'りゅ', 'りょ'] },
                 'わ': { romaji: 'wa', variants: ['わ', 'を', 'ん'] },
-                'ー': { romaji: '-', variants: ['ー'] } // 伸ばす記号を追加
+                'ー': { romaji: '-', variants: ['ー'] }
             };
 
             // カタカナマップ
@@ -425,7 +425,7 @@
                 'じゃ': 'ジャ', 'じゅ': 'ジュ', 'じょ': 'ジョ',
                 'びゃ': 'ビャ', 'びゅ': 'ビュ', 'びょ': 'ビョ',
                 'ぴゃ': 'ピャ', 'ぴゅ': 'ピュ', 'ぴょ': 'ピョ',
-                'ー': 'ー' // カタカナの伸ばす記号
+                'ー': 'ー'
             };
 
             // ローマ字マップ
@@ -459,7 +459,39 @@
                 'じゃ': 'ja', 'じゅ': 'ju', 'じょ': 'jo',
                 'びゃ': 'bya', 'びゅ': 'byu', 'びょ': 'byo',
                 'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo',
-                'ー': '-' // ローマ字の伸ばす記号
+                'ー': '-'
+            };
+
+            // 母音マップ
+            const vowelMap = {
+                'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
+                'か': 'a', 'き': 'i', 'く': 'u', 'け': 'e', 'こ': 'o',
+                'さ': 'a', 'し': 'i', 'す': 'u', 'せ': 'e', 'そ': 'o',
+                'た': 'a', 'ち': 'i', 'つ': 'u', 'て': 'e', 'と': 'o',
+                'な': 'a', 'に': 'i', 'ぬ': 'u', 'ね': 'e', 'の': 'o',
+                'は': 'a', 'ひ': 'i', 'ふ': 'u', 'へ': 'e', 'ほ': 'o',
+                'ま': 'a', 'み': 'i', 'む': 'u', 'め': 'e', 'も': 'o',
+                'や': 'a', 'ゆ': 'u', 'よ': 'o',
+                'ら': 'a', 'り': 'i', 'る': 'u', 'れ': 'e', 'ろ': 'o',
+                'わ': 'a', 'を': 'o', 'ん': 'n',
+                'が': 'a', 'ぎ': 'i', 'ぐ': 'u', 'げ': 'e', 'ご': 'o',
+                'ざ': 'a', 'じ': 'i', 'ず': 'u', 'ぜ': 'e', 'ぞ': 'o',
+                'だ': 'a', 'ぢ': 'i', 'づ': 'u', 'で': 'e', 'ど': 'o',
+                'ば': 'a', 'び': 'i', 'ぶ': 'u', 'べ': 'e', 'ぼ': 'o',
+                'ぱ': 'a', 'ぴ': 'i', 'ぷ': 'u', 'ぺ': 'e', 'ぽ': 'o',
+                'ぁ': 'a', 'ぃ': 'i', 'ぅ': 'u', 'ぇ': 'e', 'ぉ': 'o',
+                'ゃ': 'a', 'ゅ': 'u', 'ょ': 'o',
+                'きゃ': 'a', 'きゅ': 'u', 'きょ': 'o',
+                'しゃ': 'a', 'しゅ': 'u', 'しょ': 'o',
+                'ちゃ': 'a', 'ちゅ': 'u', 'ちょ': 'o',
+                'にゃ': 'a', 'にゅ': 'u', 'にょ': 'o',
+                'ひゃ': 'a', 'ひゅ': 'u', 'ひょ': 'o',
+                'みゃ': 'a', 'みゅ': 'u', 'みょ': 'o',
+                'りゃ': 'a', 'りゅ': 'u', 'りょ': 'o',
+                'ぎゃ': 'a', 'ぎゅ': 'u', 'ぎょ': 'o',
+                'じゃ': 'a', 'じゅ': 'u', 'じょ': 'o',
+                'びゃ': 'a', 'びゅ': 'u', 'びょ': 'o',
+                'ぴゃ': 'a', 'ぴゅ': 'u', 'ぴょ': 'o'
             };
 
             // DOM要素
@@ -634,13 +666,14 @@
                 if ('speechSynthesis' in window) {
                     const utterance = new SpeechSynthesisUtterance();
                     
-                    // 「は」を「Ha」と発音するように強制
-                    if (char === 'は' || char === 'ハ') {
-                        utterance.text = 'ha';
-                    } else if (char === 'ー' || char === '-') {
-                        // 伸ばす記号は無音
-                        return;
+                    // 伸ばす記号の処理
+                    if (char === 'ー' || char === '-') {
+                        // 前の文字の母音を伸ばす
+                        const previousChar = currentOutput[currentOutput.length - 2];
+                        const vowel = vowelMap[previousChar] || 'a';
+                        utterance.text = vowel;
                     } else {
+                        // 通常の文字はそのまま発音
                         utterance.text = char;
                     }
                     
@@ -701,6 +734,35 @@
                 kanaModal.classList.remove('hidden');
             }
 
+            // 文章全体を発音
+            function speakFullText(text) {
+                if (!text) return;
+                
+                const chars = processOutputString(text);
+                let speechText = '';
+                
+                for (let i = 0; i < chars.length; i++) {
+                    const char = chars[i];
+                    
+                    if (char === 'ー' || char === '-') {
+                        // 伸ばす記号の場合、前の文字の母音を追加
+                        const prevChar = chars[i-1];
+                        const vowel = vowelMap[prevChar] || 'a';
+                        speechText += vowel;
+                    } else {
+                        speechText += char;
+                    }
+                }
+                
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance();
+                    utterance.text = speechText;
+                    utterance.lang = 'ja-JP';
+                    utterance.rate = 0.8;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
             // イベントリスナー
             document.querySelectorAll('.kana-btn[data-base]').forEach(button => {
                 button.addEventListener('click', () => {
@@ -710,23 +772,7 @@
             });
 
             speakBtn.addEventListener('click', () => {
-                if (currentOutput) {
-                    const utterance = new SpeechSynthesisUtterance();
-                    
-                    // 出力全体の「は」を「ha」に変換して発音
-                    let textToSpeak = currentOutput;
-                    if (currentScript === 'hiragana' || currentScript === 'katakana') {
-                        textToSpeak = textToSpeak.replace(/は/g, 'ha').replace(/ハ/g, 'ha');
-                    }
-                    
-                    // 伸ばす記号は無音
-                    textToSpeak = textToSpeak.replace(/ー/g, '').replace(/-/g, '');
-                    
-                    utterance.text = textToSpeak;
-                    utterance.lang = 'ja-JP';
-                    utterance.rate = 0.8;
-                    speechSynthesis.speak(utterance);
-                }
+                speakFullText(currentOutput);
             });
 
             clearBtn.addEventListener('click', () => {
