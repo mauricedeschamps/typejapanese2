@@ -307,6 +307,7 @@
             <div id="outputText" class="output-text"></div>
             <div class="output-controls">
                 <button id="speakBtn">Speak</button>
+                <button id="backspaceBtn">Backspace</button>
                 <button id="clearBtn">Clear</button>
                 <button id="showRomajiBtn">Show Romaji</button>
             </div>
@@ -498,6 +499,7 @@
             const outputText = document.getElementById('outputText');
             const romajiOutput = document.getElementById('romajiOutput');
             const speakBtn = document.getElementById('speakBtn');
+            const backspaceBtn = document.getElementById('backspaceBtn');
             const clearBtn = document.getElementById('clearBtn');
             const showRomajiBtn = document.getElementById('showRomajiBtn');
             const subMenu = document.getElementById('subMenu');
@@ -595,6 +597,27 @@
                 currentOutput += char;
                 renderOutput();
                 speakCharacter(char);
+            }
+
+            // 1文字削除
+            function backspace() {
+                if (currentOutput.length === 0) return;
+                
+                // 最後の文字が小文字の組み合わせかどうかチェック
+                const lastChar = currentOutput[currentOutput.length - 1];
+                const prevChar = currentOutput[currentOutput.length - 2];
+                
+                if (prevChar && (lastChar === 'ゃ' || lastChar === 'ゅ' || lastChar === 'ょ' || 
+                                lastChar === 'ぁ' || lastChar === 'ぃ' || lastChar === 'ぅ' || 
+                                lastChar === 'ぇ' || lastChar === 'ぉ')) {
+                    // 組み合わせ文字の場合、2文字削除
+                    currentOutput = currentOutput.slice(0, -2);
+                } else {
+                    // 通常の文字の場合、1文字削除
+                    currentOutput = currentOutput.slice(0, -1);
+                }
+                
+                renderOutput();
             }
 
             // 出力のレンダリング
@@ -773,6 +796,10 @@
 
             speakBtn.addEventListener('click', () => {
                 speakFullText(currentOutput);
+            });
+
+            backspaceBtn.addEventListener('click', () => {
+                backspace();
             });
 
             clearBtn.addEventListener('click', () => {
