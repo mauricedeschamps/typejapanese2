@@ -684,22 +684,53 @@
                 romajiOutput.textContent = romaji;
             }
 
-            // 文字の発音
+ // 文字の発音
             function speakCharacter(char) {
                 if ('speechSynthesis' in window) {
                     const utterance = new SpeechSynthesisUtterance();
                     
                     // 伸ばす記号の処理
                     if (char === 'ー' || char === '-') {
-                        // 前の文字の母音を伸ばす
+                        // 前の文字の母音を取得
                         const previousChar = currentOutput[currentOutput.length - 2];
-                        const vowel = vowelMap[previousChar] || 'a';
-                        utterance.text = vowel;
+                        const vowel = vowelMap[previousChar] || 'あ';
+                        // 母音に「ー」を付けて発音 (例: "あー")
+                        utterance.text = vowel + 'ー';
                     } else {
                         // 通常の文字はそのまま発音
                         utterance.text = char;
                     }
                     
+                    utterance.lang = 'ja-JP';
+                    utterance.rate = 0.8;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            // 文章全体を発音
+            function speakFullText(text) {
+                if (!text) return;
+                
+                const chars = processOutputString(text);
+                let speechText = '';
+                
+                for (let i = 0; i < chars.length; i++) {
+                    const char = chars[i];
+                    
+                    if (char === 'ー' || char === '-') {
+                        // 伸ばす記号の場合、前の文字の母音を取得
+                        const prevChar = chars[i-1];
+                        const vowel = vowelMap[prevChar] || 'あ';
+                        // 母音に「ー」を付けて発音 (例: "あー")
+                        speechText += vowel + 'ー';
+                    } else {
+                        speechText += char;
+                    }
+                }
+                
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance();
+                    utterance.text = speechText;
                     utterance.lang = 'ja-JP';
                     utterance.rate = 0.8;
                     speechSynthesis.speak(utterance);
