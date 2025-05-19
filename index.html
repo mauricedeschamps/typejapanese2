@@ -463,36 +463,37 @@
                 'ー': '-'
             };
 
-            // 母音マップ
-            const vowelMap = {
-                'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
-                'か': 'a', 'き': 'i', 'く': 'u', 'け': 'e', 'こ': 'o',
-                'さ': 'a', 'し': 'i', 'す': 'u', 'せ': 'e', 'そ': 'o',
-                'た': 'a', 'ち': 'i', 'つ': 'u', 'て': 'e', 'と': 'o',
-                'な': 'a', 'に': 'i', 'ぬ': 'u', 'ね': 'e', 'の': 'o',
-                'は': 'a', 'ひ': 'i', 'ふ': 'u', 'へ': 'e', 'ほ': 'o',
-                'ま': 'a', 'み': 'i', 'む': 'u', 'め': 'e', 'も': 'o',
-                'や': 'a', 'ゆ': 'u', 'よ': 'o',
-                'ら': 'a', 'り': 'i', 'る': 'u', 'れ': 'e', 'ろ': 'o',
-                'わ': 'a', 'を': 'o', 'ん': 'n',
-                'が': 'a', 'ぎ': 'i', 'ぐ': 'u', 'げ': 'e', 'ご': 'o',
-                'ざ': 'a', 'じ': 'i', 'ず': 'u', 'ぜ': 'e', 'ぞ': 'o',
-                'だ': 'a', 'ぢ': 'i', 'づ': 'u', 'で': 'e', 'ど': 'o',
-                'ば': 'a', 'び': 'i', 'ぶ': 'u', 'べ': 'e', 'ぼ': 'o',
-                'ぱ': 'a', 'ぴ': 'i', 'ぷ': 'u', 'ぺ': 'e', 'ぽ': 'o',
-                'ぁ': 'a', 'ぃ': 'i', 'ぅ': 'u', 'ぇ': 'e', 'ぉ': 'o',
-                'ゃ': 'a', 'ゅ': 'u', 'ょ': 'o',
-                'きゃ': 'a', 'きゅ': 'u', 'きょ': 'o',
-                'しゃ': 'a', 'しゅ': 'u', 'しょ': 'o',
-                'ちゃ': 'a', 'ちゅ': 'u', 'ちょ': 'o',
-                'にゃ': 'a', 'にゅ': 'u', 'にょ': 'o',
-                'ひゃ': 'a', 'ひゅ': 'u', 'ひょ': 'o',
-                'みゃ': 'a', 'みゅ': 'u', 'みょ': 'o',
-                'りゃ': 'a', 'りゅ': 'u', 'りょ': 'o',
-                'ぎゃ': 'a', 'ぎゅ': 'u', 'ぎょ': 'o',
-                'じゃ': 'a', 'じゅ': 'u', 'じょ': 'o',
-                'びゃ': 'a', 'びゅ': 'u', 'びょ': 'o',
-                'ぴゃ': 'a', 'ぴゅ': 'u', 'ぴょ': 'o'
+            // 母音マップ (日本語の発音用)
+            const japaneseVowelMap = {
+                'a': 'あ', 'i': 'い', 'u': 'う', 'e': 'え', 'o': 'お',
+                'あ': 'あ', 'い': 'い', 'う': 'う', 'え': 'え', 'お': 'お',
+                'か': 'あ', 'き': 'い', 'く': 'う', 'け': 'え', 'こ': 'お',
+                'さ': 'あ', 'し': 'い', 'す': 'う', 'せ': 'え', 'そ': 'お',
+                'た': 'あ', 'ち': 'い', 'つ': 'う', 'て': 'え', 'と': 'お',
+                'な': 'あ', 'に': 'い', 'ぬ': 'う', 'ね': 'え', 'の': 'お',
+                'は': 'あ', 'ひ': 'い', 'ふ': 'う', 'へ': 'え', 'ほ': 'お',
+                'ま': 'あ', 'み': 'い', 'む': 'う', 'め': 'え', 'も': 'お',
+                'や': 'あ', 'ゆ': 'う', 'よ': 'お',
+                'ら': 'あ', 'り': 'い', 'る': 'う', 'れ': 'え', 'ろ': 'お',
+                'わ': 'あ', 'を': 'お', 'ん': 'ん',
+                'が': 'あ', 'ぎ': 'い', 'ぐ': 'う', 'げ': 'え', 'ご': 'お',
+                'ざ': 'あ', 'じ': 'い', 'ず': 'う', 'ぜ': 'え', 'ぞ': 'お',
+                'だ': 'あ', 'ぢ': 'い', 'づ': 'う', 'で': 'え', 'ど': 'お',
+                'ば': 'あ', 'び': 'い', 'ぶ': 'う', 'べ': 'え', 'ぼ': 'お',
+                'ぱ': 'あ', 'ぴ': 'い', 'ぷ': 'う', 'ぺ': 'え', 'ぽ': 'お',
+                'ぁ': 'あ', 'ぃ': 'い', 'ぅ': 'う', 'ぇ': 'え', 'ぉ': 'お',
+                'ゃ': 'あ', 'ゅ': 'う', 'ょ': 'お',
+                'きゃ': 'あ', 'きゅ': 'う', 'きょ': 'お',
+                'しゃ': 'あ', 'しゅ': 'う', 'しょ': 'お',
+                'ちゃ': 'あ', 'ちゅ': 'う', 'ちょ': 'お',
+                'にゃ': 'あ', 'にゅ': 'う', 'にょ': 'お',
+                'ひゃ': 'あ', 'ひゅ': 'う', 'ひょ': 'お',
+                'みゃ': 'あ', 'みゅ': 'う', 'みょ': 'お',
+                'りゃ': 'あ', 'りゅ': 'う', 'りょ': 'お',
+                'ぎゃ': 'あ', 'ぎゅ': 'う', 'ぎょ': 'お',
+                'じゃ': 'あ', 'じゅ': 'う', 'じょ': 'お',
+                'びゃ': 'あ', 'びゅ': 'う', 'びょ': 'お',
+                'ぴゃ': 'あ', 'ぴゅ': 'う', 'ぴょ': 'お'
             };
 
             // DOM要素
@@ -686,24 +687,55 @@
 
             // 文字の発音
             function speakCharacter(char) {
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance();
-                    
-                    // 伸ばす記号の処理
-                    if (char === 'ー' || char === '-') {
-                        // 前の文字の母音を伸ばす
-                        const previousChar = currentOutput[currentOutput.length - 2];
-                        const vowel = vowelMap[previousChar] || 'a';
-                        utterance.text = vowel;
-                    } else {
-                        // 通常の文字はそのまま発音
-                        utterance.text = char;
-                    }
-                    
-                    utterance.lang = 'ja-JP';
-                    utterance.rate = 0.8;
-                    speechSynthesis.speak(utterance);
+                if (!('speechSynthesis' in window)) return;
+                
+                speechSynthesis.cancel(); // 現在の発音をキャンセル
+                
+                const utterance = new SpeechSynthesisUtterance();
+                
+                // 伸ばす記号の処理
+                if (char === 'ー' || char === '-') {
+                    // 前の文字の母音を日本語で取得
+                    const previousChar = currentOutput[currentOutput.length - 2];
+                    const vowelSound = japaneseVowelMap[previousChar] || 'あ';
+                    utterance.text = vowelSound + 'ー';
+                } else {
+                    // 通常の文字はそのまま発音
+                    utterance.text = char;
                 }
+                
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            }
+
+            // 文章全体を発音
+            function speakFullText() {
+                if (!currentOutput || !('speechSynthesis' in window)) return;
+                
+                speechSynthesis.cancel(); // 現在の発音をキャンセル
+                
+                const chars = processOutputString(currentOutput);
+                let speechText = '';
+                
+                for (let i = 0; i < chars.length; i++) {
+                    const char = chars[i];
+                    
+                    if (char === 'ー' || char === '-') {
+                        // 伸ばす記号の場合、前の文字の母音を日本語で取得
+                        const prevChar = chars[i-1];
+                        const vowelSound = japaneseVowelMap[prevChar] || 'あ';
+                        speechText += vowelSound + 'ー';
+                    } else {
+                        speechText += char;
+                    }
+                }
+                
+                const utterance = new SpeechSynthesisUtterance();
+                utterance.text = speechText;
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
             }
 
             // 文字情報の表示
@@ -757,35 +789,6 @@
                 kanaModal.classList.remove('hidden');
             }
 
-            // 文章全体を発音
-            function speakFullText(text) {
-                if (!text) return;
-                
-                const chars = processOutputString(text);
-                let speechText = '';
-                
-                for (let i = 0; i < chars.length; i++) {
-                    const char = chars[i];
-                    
-                    if (char === 'ー' || char === '-') {
-                        // 伸ばす記号の場合、前の文字の母音を追加
-                        const prevChar = chars[i-1];
-                        const vowel = vowelMap[prevChar] || 'a';
-                        speechText += vowel;
-                    } else {
-                        speechText += char;
-                    }
-                }
-                
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance();
-                    utterance.text = speechText;
-                    utterance.lang = 'ja-JP';
-                    utterance.rate = 0.8;
-                    speechSynthesis.speak(utterance);
-                }
-            }
-
             // イベントリスナー
             document.querySelectorAll('.kana-btn[data-base]').forEach(button => {
                 button.addEventListener('click', () => {
@@ -794,13 +797,9 @@
                 });
             });
 
-            speakBtn.addEventListener('click', () => {
-                speakFullText(currentOutput);
-            });
+            speakBtn.addEventListener('click', speakFullText);
 
-            backspaceBtn.addEventListener('click', () => {
-                backspace();
-            });
+            backspaceBtn.addEventListener('click', backspace);
 
             clearBtn.addEventListener('click', () => {
                 currentOutput = '';
