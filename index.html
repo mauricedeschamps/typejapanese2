@@ -684,58 +684,83 @@
                 romajiOutput.textContent = romaji;
             }
 
- // 文字の発音
-            function speakCharacter(char) {
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance();
-                    
-                    // 伸ばす記号の処理
-                    if (char === 'ー' || char === '-') {
-                        // 前の文字の母音を取得
-                        const previousChar = currentOutput[currentOutput.length - 2];
-                        const vowel = vowelMap[previousChar] || 'あ';
-                        // 母音に「ー」を付けて発音 (例: "あー")
-                        utterance.text = vowel + 'ー';
-                    } else {
-                        // 通常の文字はそのまま発音
-                        utterance.text = char;
-                    }
-                    
-                    utterance.lang = 'ja-JP';
-                    utterance.rate = 0.8;
-                    speechSynthesis.speak(utterance);
+    // 文字の発音
+    function speakCharacter(char) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance();
+            
+            // 伸ばす記号の処理
+            if (char === 'ー' || char === '-') {
+                // 前の文字の母音を取得
+                const previousChar = currentOutput[currentOutput.length - 2];
+                let vowelSound = 'あ';
+                
+                // 日本語の母音を直接指定
+                if (previousChar) {
+                    const baseVowel = vowelMap[previousChar];
+                    if (baseVowel === 'a') vowelSound = 'あ';
+                    else if (baseVowel === 'i') vowelSound = 'い';
+                    else if (baseVowel === 'u') vowelSound = 'う';
+                    else if (baseVowel === 'e') vowelSound = 'え';
+                    else if (baseVowel === 'o') vowelSound = 'お';
                 }
+                
+                // 母音を伸ばして発音 (例: "あー")
+                utterance.text = vowelSound + 'ー';
+            } else {
+                // 通常の文字はそのまま発音
+                utterance.text = char;
             }
+            
+            utterance.lang = 'ja-JP';
+            utterance.rate = 0.8;
+            speechSynthesis.cancel(); // 現在の発音をキャンセル
+            speechSynthesis.speak(utterance);
+        }
+    }
 
-            // 文章全体を発音
-            function speakFullText(text) {
-                if (!text) return;
+    // 文章全体を発音
+    function speakFullText(text) {
+        if (!text || !('speechSynthesis' in window)) return;
+        
+        const chars = processOutputString(text);
+        let speechText = '';
+        
+        for (let i = 0; i < chars.length; i++) {
+            const char = chars[i];
+            
+            if (char === 'ー' || char === '-') {
+                // 伸ばす記号の場合、前の文字の母音を日本語で取得
+                const prevChar = chars[i-1];
+                let vowelSound = 'あ';
                 
-                const chars = processOutputString(text);
-                let speechText = '';
-                
-                for (let i = 0; i < chars.length; i++) {
-                    const char = chars[i];
-                    
-                    if (char === 'ー' || char === '-') {
-                        // 伸ばす記号の場合、前の文字の母音を取得
-                        const prevChar = chars[i-1];
-                        const vowel = vowelMap[prevChar] || 'あ';
-                        // 母音に「ー」を付けて発音 (例: "あー")
-                        speechText += vowel + 'ー';
-                    } else {
-                        speechText += char;
-                    }
+                if (prevChar) {
+                    const baseVowel = vowelMap[prevChar];
+                    if (baseVowel === 'a') vowelSound = 'あ';
+                    else if (baseVowel === 'i') vowelSound = 'い';
+                    else if (baseVowel === 'u') vowelSound = 'う';
+                    else if (baseVowel === 'e') vowelSound = 'え';
+                    else if (baseVowel === 'o') vowelSound = 'お';
                 }
                 
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance();
-                    utterance.text = speechText;
-                    utterance.lang = 'ja-JP';
-                    utterance.rate = 0.8;
-                    speechSynthesis.speak(utterance);
-                }
+                speechText += vowelSound + 'ー';
+            } else {
+                speechText += char;
             }
+        }
+        
+        const utterance = new SpeechSynthesisUtterance();
+        utterance.text = speechText;
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.8;
+        speechSynthesis.cancel(); // 現在の発音をキャンセル
+        speechSynthesis.speak(utterance);
+    }
+
+    // ... (残りのコードはそのまま)
+</script>
+
+ 
 
             // 文字情報の表示
             function showCharacterInfo(char) {
